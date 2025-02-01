@@ -140,16 +140,26 @@ const validáció = (e)=>{ //deklarálok egy validávió változót ami tartalma
             document.getElementById(i).innerHTML = "Ezt a ezőt is ki kell tölteni!" // és kiírom elá, hogy ezt is ki kéne tölteni
         }
     }
+    if ((formCellsPluss.esem2.value && !formCellsPluss.t2.value) || (!formCellsPluss.esem2.value && formCellsPluss.t2.value)){ // ellenörzöm, hogy csak egy opcionális mező ki van e töltve
+        jo = false // ha igen akkor ez már nem jó mert vagy mind a kettő kell vagy semeik
+        if (formCellsPluss.esem2.value){ // ha az esem2 megvan 
+            document.getElementById("t2").innerHTML = "Ezt a ezőt is ki kell tölteni!"; // akkor a t2 nincs vagyis hiba üzenet kell
+        }
+        if (formCellsPluss.t2.value){// ha az t2 megvan 
+            document.getElementById("esem2").innerHTML = "Ezt a ezőt is ki kell tölteni!"; // akkor a esem2 nincs vagyis hiba üzenet kell
+        }
+    }
     if (jo){ // ellenörzöm az hogy jók voltak e az előző értékek
         let data = { // létrehozok egy változót ami tárolja a tábla adatainak a tárolóit
             ur:formCells.ur,//hozzárendelem a kulcshoz a form egyik celláját
             esem:formCells.esem,//hozzárendelem a kulcshoz a form egyik celláját
             t:formCells.t//hozzárendelem a kulcshoz a form egyik celláját
         };
-        if (formCellsPluss.esem2.value && formCellsPluss.t2){ // ellenörzöm, hogy ki van-e töltve a két opcionális cella és ha igen akkor 
+        if (formCellsPluss.esem2.value && formCellsPluss.t2.value){ // ellenörzöm, hogy ki van-e töltve a két opcionális cella és ha igen akkor 
             data.esem2 = formCellsPluss.esem2;//ezt is hozzáadom a data objektumhoz
             data.t2 = formCellsPluss.t2;//ezt is hozzáadom a data objektumhoz
         }
+
         t.addRow(valuesítóÉsTörlő(data)) //végül kiszedem az adatokat a form celláiból lenullázom őket, és odaadom az adatokat a sorkészítőnek
     }
 }
