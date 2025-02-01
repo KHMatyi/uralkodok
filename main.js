@@ -4,48 +4,48 @@
  * @typedef {RowData[]} TableData
  */
 
-const thd = ["Uralkodó","Esemény","Évszám"];
-const tcd = [
+const thd = ["Uralkodó","Esemény","Évszám"]; //A táblázat headerjel elmentve egy listába
+const tcd = [   // objektum a listában lévő kezdő adatok tárolására
     {
-        ur:"I. István",
-        esem:"Koronázás",
-        t:"1000",
-        esem2:"Pannonhalmi apátság megalapítása ",
-        t2:"1001"
+        ur:"I. István", //egy string hozzákötve egy kulcshoz 
+        esem:"Koronázás",//egy string hozzákötve egy kulcshoz 
+        t:"1000",//egy string hozzákötve egy kulcshoz 
+        esem2:"Pannonhalmi apátság megalapítása ",//egy string hozzákötve egy kulcshoz 
+        t2:"1001"//egy string hozzákötve egy kulcshoz 
     },
     {
-        ur:"IV. Béla",
-        esem:"tatárjárás",
-        t:"1241-1242"
+        ur:"IV. Béla",//egy string hozzákötve egy kulcshoz 
+        esem:"tatárjárás",//egy string hozzákötve egy kulcshoz 
+        t:"1241-1242"//egy string hozzákötve egy kulcshoz 
     },
     {
-        ur:"Mátyás király",
-        esem:"Bécs elfoglalása",
-        t:"1485",
-        esem2:"Kenyérmezei csata",
-        t2:"1479"
+        ur:"Mátyás király",//egy string hozzákötve egy kulcshoz 
+        esem:"Bécs elfoglalása",//egy string hozzákötve egy kulcshoz 
+        t:"1485",//egy string hozzákötve egy kulcshoz 
+        esem2:"Kenyérmezei csata",//egy string hozzákötve egy kulcshoz 
+        t2:"1479"//egy string hozzákötve egy kulcshoz 
     },
     {
-        ur:"II. Rákóczi Ferenc",
-        esem:"A szabadságharc kezdete",
-        t:"1703",
-        esem2:"A szabadságharc vége",
-        t2:"1711"
+        ur:"II. Rákóczi Ferenc",//egy string hozzákötve egy kulcshoz 
+        esem:"A szabadságharc kezdete",//egy string hozzákötve egy kulcshoz 
+        t:"1703",//egy string hozzákötve egy kulcshoz 
+        esem2:"A szabadságharc vége",//egy string hozzákötve egy kulcshoz 
+        t2:"1711"//egy string hozzákötve egy kulcshoz 
     },
 ];
 
-class T_Table{
+class T_Table{ //class a table generáláshához
     /**
      * @type {HTMLElement}
      */
-    #tbody;
+    #tbody; // tbody deklarálása
 
     /**
      * @param {TableHeaderData} thd 
      * @param {TableData} tcd 
      */
-    constructor(thd,tcd = []){
-        const table = document.createElement("table");
+    constructor(thd,tcd = []){ // a table osztáj construktora ebbene az esetben példányosításkor felépítí az alap táblázatot
+        const table = document.createElement("table"); // 
         document.getElementById("tb").appendChild(table);
 
         const thead = document.createElement("thead");
@@ -120,8 +120,7 @@ const t = new T_Table(thd,tcd);
 
 form.addEventListener("submit",(e)=>{
     e.preventDefault();
-    const errors = form.querySelectorAll(".error");
-    for (const i of errors){
+    for (const i of form.querySelectorAll(".error")){
         i.innerHTML = "";
     }
     let jo = true;
