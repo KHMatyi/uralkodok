@@ -35,6 +35,9 @@ const tcd = [
 ];
 
 class T_Table{
+    /**
+     * @type {HTMLElement}
+     */
     #tbody;
 
     /**
@@ -72,6 +75,7 @@ class T_Table{
         this.#tbody.appendChild(tr);
 
         const multiple = rowData.esem2 ? true : false;
+
         this.#rowadder(tr, rowData.ur, multiple)
         this.#rowadder(tr, rowData.esem)
         this.#rowadder(tr, rowData.t)
@@ -101,4 +105,43 @@ class T_Table{
     }
 }
 
+const form = document.getElementById("form");
+const formCells = {
+    ur: document.getElementById("uralkodo_nev"),
+    esem: document.getElementById("esemeny1"),
+    t: document.getElementById("evszam1"),
+};
+const formCellsPluss = {
+    esem2: document.getElementById("esemeny2"),
+    t2: document.getElementById("evszam2"),
+};
+
 const t = new T_Table(thd,tcd);
+
+form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    const errors = form.querySelectorAll(".error");
+    for (const i of errors){
+        i.innerHTML = "";
+    }
+    let jo = true;
+    for (const i in formCells){
+        if (formCells[i].value == ""){
+            jo = false;
+            document.getElementById(i).innerHTML = "Ezt a ezőt is ki kell tölteni!"
+        }
+    }
+    if (jo){
+        let data = {
+            ur:formCells.ur.value,
+            esem:formCells.esem.value,
+            t:formCells.t.value
+        };
+        if (formCellsPluss.esem2.value && formCellsPluss.t2.value){
+            data.esem2 = formCellsPluss.esem2.value;
+            data.t2 = formCellsPluss.t2.value;
+        }
+        t.addRow(data)
+    }
+});
+
