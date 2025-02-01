@@ -5,7 +5,9 @@
  * @typedef {id:String,text:String,errorId:String} FormData
  */
 
-const thd = ["Uralkodó","Esemény","Évszám"]; //A táblázat headerjel elmentve egy listába
+/**
+ * @type {TableData}
+ */
 const tcd = [   // objektum a listában lévő kezdő adatok tárolására
     {
         ur:"I. István", //egy string hozzákötve egy kulcshoz 
@@ -35,6 +37,9 @@ const tcd = [   // objektum a listában lévő kezdő adatok tárolására
     },
 ];
 
+/**
+ * @type {FormData[]}
+ */
 const formData = [ // tárolja az adatokat a form programatikus létrehozásához
     {
         id:"uralkodo_nev", // házzákötök egy sztinget egy kulcshoz
@@ -63,7 +68,7 @@ const formData = [ // tárolja az adatokat a form programatikus létrehozásáho
     },
 ]
 
-const t = new T_Table(thd,tcd); // példányosítom a T_Table clast
-const f = new F_Form(formData, t);
+const t = new T_Table(tcd); // példányosítom a T_Table clast
+const f = new F_Form(formData, t); // példányosítom a F_Form classt
 
 

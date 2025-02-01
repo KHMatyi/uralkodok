@@ -1,4 +1,4 @@
-td:first-child, th:first-child, td:last-child, th:last-child{
+.blue {
     background-color: lightblue;
 }
 
