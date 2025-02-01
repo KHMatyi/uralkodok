@@ -45,47 +45,47 @@ class T_Table{ //class a table generáláshához
      * @param {TableData} tcd 
      */
     constructor(thd,tcd = []){ // a table osztáj construktora ebbene az esetben példányosításkor felépítí az alap táblázatot
-        const table = document.createElement("table"); // 
-        document.getElementById("tb").appendChild(table);
+        const table = document.createElement("table"); // csinálunk egy table html elementet
+        document.getElementById("tb").appendChild(table); // belerajkuk az előbb említett elemet a tb idjü divbe
 
-        const thead = document.createElement("thead");
-        table.appendChild(thead);
-        const tr = document.createElement("tr");
-        thead.appendChild(tr);
+        const thead = document.createElement("thead"); // létrehozunk egy theadet
+        table.appendChild(thead);   // belerakjuk a thedünket a tableba
+        const tr = document.createElement("tr"); // létrehozunk egy trt
+        thead.appendChild(tr); // belerakjuk a theadbe
 
-        for (const i of thd){
-            const th = document.createElement("th");
-            tr.appendChild(th);
-            th.innerHTML = i;
+        for (const i of thd){   // végigiterálunk a table head listánkun
+            const th = document.createElement("th"); // létrehozunk egy th elemet
+            tr.appendChild(th); // belerakjuk egy trbe 
+            th.innerHTML = i; // beleírjuk a header szövegét
         }
 
-        this.#tbody = document.createElement("tbody");
-        table.appendChild(this.#tbody);
+        this.#tbody = document.createElement("tbody"); // létrehozunk egy tbody elemet és elmentjük egy privát változóba
+        table.appendChild(this.#tbody); // appendeljük a tbodynkat a table be
 
-        for (const i of tcd){
-            this.addRow(i);
+        for (const i of tcd){   //végigiterálunk a kezdő adatainkon 
+            this.addRow(i); //és hozzáadjuk őket soronként a táblázathoz
         }
     }
 
     /**
      * @param {RowData} rowData
      */
-    addRow(rowData){
-        const tr = document.createElement("tr");
-        this.#tbody.appendChild(tr);
+    addRow(rowData){ // publikus metódus solok hozzáadásához egy rowdata paraméterrel
+        const tr = document.createElement("tr"); // létrehozunk egy tr elementet    
+        this.#tbody.appendChild(tr);// és hozzáadjuk a tbodynkhoz
 
-        const multiple = rowData.esem2 ? true : false;
+        const multiple = rowData.esem2 ? true : false; // átalakítjuk az undefindot egy boolá
 
-        this.#rowadder(tr, rowData.ur, multiple)
-        this.#rowadder(tr, rowData.esem)
-        this.#rowadder(tr, rowData.t)
+        this.#rowadder(tr, rowData.ur, multiple) // hozzáadunk egy cellát a táblázathoz
+        this.#rowadder(tr, rowData.esem)// hozzáadunk egy cellát a táblázathoz
+        this.#rowadder(tr, rowData.t)// hozzáadunk egy cellát a táblázathoz
 
-        if (multiple){
-            const tr = document.createElement("tr");
-            this.#tbody.appendChild(tr);
+        if (multiple){ // akkor fut le ha a beadott objektumunknak van az esem2 kulcshoz adata
+            const tr = document.createElement("tr");//létrehozunk egy második tr elemet
+            this.#tbody.appendChild(tr); // és belerakjuk a tbodynkba
 
-            this.#rowadder(tr, rowData.esem2)
-            this.#rowadder(tr, rowData.t2)
+            this.#rowadder(tr, rowData.esem2) //házzáadunk egy sort az új trhez
+            this.#rowadder(tr, rowData.t2)//házzáadunk egy sort az új trhez
         }
     }
 
@@ -95,52 +95,53 @@ class T_Table{ //class a table generáláshához
      * @param {String} data 
      * @param {Boolean} rs 
      */
-    #rowadder(tr,data,rs = false){
-        const td = document.createElement("td");
-        tr.appendChild(td);
-        td.innerHTML = data;
-        if (rs) {
-            td.rowSpan = 2;
+    #rowadder(tr,data,rs = false){ // egy privát metódus ami nek 2 paraméter kell a tr amihez hottá lesz rakja a gyártott td, a td szvege és még kellhet egy opcionális bool flag ami megmodja, hogy 2-re kell e növelni a gyártott td-n a rowspan atributumot
+        const td = document.createElement("td"); // létrehozunk egy td elemet és lementjuk egy td változóban
+        tr.appendChild(td);// majd belerajuk a trünkbe
+        td.innerHTML = data; // beleírjuk a cellánkba a szövegét
+        if (rs) { //akkor fut le ha beadott paraméter igaz
+            td.rowSpan = 2;// a td kettő sort forg elfoglalni
         }
     }
 }
 
-const form = document.getElementById("form");
-const formCells = {
-    ur: document.getElementById("uralkodo_nev"),
-    esem: document.getElementById("esemeny1"),
-    t: document.getElementById("evszam1"),
+const form = document.getElementById("form"); // elmentek egy pointert a html elementről
+const formCells = { // kötelető cellákat tárolom itt
+    ur: document.getElementById("uralkodo_nev"),// elmentek egy pointert a html elementről
+    esem: document.getElementById("esemeny1"),// elmentek egy pointert a html elementről
+    t: document.getElementById("evszam1"),// elmentek egy pointert a html elementről
 };
-const formCellsPluss = {
-    esem2: document.getElementById("esemeny2"),
-    t2: document.getElementById("evszam2"),
+const formCellsPluss = { //nem kötelető cellákat tárolom itt
+    esem2: document.getElementById("esemeny2"),// elmentek egy pointert a html elementről
+    t2: document.getElementById("evszam2"),// elmentek egy pointert a html elementről
 };
 
-const t = new T_Table(thd,tcd);
+const t = new T_Table(thd,tcd); // példányosítom a T_Table clast
 
-form.addEventListener("submit",(e)=>{
-    e.preventDefault();
-    for (const i of form.querySelectorAll(".error")){
-        i.innerHTML = "";
+const validáció = (e)=>{ //deklarálok egy validávió változót ami tartalmaz egy functiont ami csinálja a validációt
+    e.preventDefault(); // megakadájozom az alap történések lefutását
+    for (const i of form.querySelectorAll(".error")){ // végigiterálok az error classu elemeken és lenullázom a szövegüket
+        i.innerHTML = ""; // szöveg lenullázás
     }
-    let jo = true;
-    for (const i in formCells){
-        if (formCells[i].value == ""){
-            jo = false;
-            document.getElementById(i).innerHTML = "Ezt a ezőt is ki kell tölteni!"
+    let jo = true; // egy változó arra, ha üres az egyik kötelező cella a formban
+    for (const i in formCells){ // végigmegyek a kötelező cellákon
+        if (formCells[i].value == ""){ //és ha valaelyiknek az értéke egy üres string
+            jo = false;// akor a jóságot jelző változót átírom 
+            document.getElementById(i).innerHTML = "Ezt a ezőt is ki kell tölteni!" // és kiírom elá, hogy ezt is ki kéne tölteni
         }
     }
-    if (jo){
-        let data = {
-            ur:formCells.ur.value,
-            esem:formCells.esem.value,
-            t:formCells.t.value
+    if (jo){ // ellenörzöm az hogy jók voltak e az előző értékek
+        let data = { // létrehozok egy változót a tála sorának adatainak tárolására
+            ur:formCells.ur.value,//hozzárendelem a kulcshoz a form egyik cellájának értékét
+            esem:formCells.esem.value,//hozzárendelem a kulcshoz a form egyik cellájának értékét
+            t:formCells.t.value//hozzárendelem a kulcshoz a form egyik cellájának értékét
         };
-        if (formCellsPluss.esem2.value && formCellsPluss.t2.value){
-            data.esem2 = formCellsPluss.esem2.value;
-            data.t2 = formCellsPluss.t2.value;
+        if (formCellsPluss.esem2.value && formCellsPluss.t2.value){ // ellenörzöm, hogy ki van-e töltve a két opcionális cella és ha igen akkor 
+            data.esem2 = formCellsPluss.esem2.value;//ezt is hozzáadom a data objektumhoz
+            data.t2 = formCellsPluss.t2.value;//ezt is hozzáadom a data objektumhoz
         }
-        t.addRow(data)
+        t.addRow(data) //és végül odaadom ezt az objektumot a tábláhozadó metódusnak
     }
-});
+}
+form.addEventListener("submit",validáció); // hozzáadok egy eventlisenert a function submit eventjére  és még megadom a validáció változót ami tartalmazza a validációs functiont
 
