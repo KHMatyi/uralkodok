@@ -118,6 +118,16 @@ const formCellsPluss = { //nem kötelető cellákat tárolom itt
 
 const t = new T_Table(thd,tcd); // példányosítom a T_Table clast
 
+
+function valuesítóÉsTörlő(obj){ //bevesz egy objektumot, végigmegy az objektumon és elmenti a tagjainak a value atributumát és lenullázza őket.
+    objout = {} // létrehozok egy üres objektumot
+    for(const i in obj){ // végigmegyek az objektumon
+        objout[i] = obj[i].value; // elmentem az adatokat
+        obj[i].value = ""; // lenullázom
+    }
+    return objout; //visszaadom az adatokat
+}
+
 const validáció = (e)=>{ //deklarálok egy validávió változót ami tartalmaz egy functiont ami csinálja a validációt
     e.preventDefault(); // megakadájozom az alap történések lefutását
     for (const i of form.querySelectorAll(".error")){ // végigiterálok az error classu elemeken és lenullázom a szövegüket
@@ -131,21 +141,16 @@ const validáció = (e)=>{ //deklarálok egy validávió változót ami tartalma
         }
     }
     if (jo){ // ellenörzöm az hogy jók voltak e az előző értékek
-        let data = { // létrehozok egy változót a tála sorának adatainak tárolására
-            ur:formCells.ur.value,//hozzárendelem a kulcshoz a form egyik cellájának értékét
-            esem:formCells.esem.value,//hozzárendelem a kulcshoz a form egyik cellájának értékét
-            t:formCells.t.value//hozzárendelem a kulcshoz a form egyik cellájának értékét
+        let data = { // létrehozok egy változót ami tárolja a tábla adatainak a tárolóit
+            ur:formCells.ur,//hozzárendelem a kulcshoz a form egyik celláját
+            esem:formCells.esem,//hozzárendelem a kulcshoz a form egyik celláját
+            t:formCells.t//hozzárendelem a kulcshoz a form egyik celláját
         };
-        if (formCellsPluss.esem2.value && formCellsPluss.t2.value){ // ellenörzöm, hogy ki van-e töltve a két opcionális cella és ha igen akkor 
-            data.esem2 = formCellsPluss.esem2.value;//ezt is hozzáadom a data objektumhoz
-            data.t2 = formCellsPluss.t2.value;//ezt is hozzáadom a data objektumhoz
+        if (formCellsPluss.esem2.value && formCellsPluss.t2){ // ellenörzöm, hogy ki van-e töltve a két opcionális cella és ha igen akkor 
+            data.esem2 = formCellsPluss.esem2;//ezt is hozzáadom a data objektumhoz
+            data.t2 = formCellsPluss.t2;//ezt is hozzáadom a data objektumhoz
         }
-        t.addRow(data) //és végül odaadom ezt az objektumot a tábláhozadó metódusnak
-        formCells.ur.value = ""; //kitöröljuk a form bemeneti mezejéből az adatokat
-        formCells.esem.value = "";//kitöröljuk a form bemeneti mezejéből az adatokat
-        formCells.t.value = "";//kitöröljuk a form bemeneti mezejéből az adatokat
-        formCellsPluss.esem2.value = "";//kitöröljuk a form bemeneti mezejéből az adatokat
-        formCellsPluss.t2.value = "";//kitöröljuk a form bemeneti mezejéből az adatokat
+        t.addRow(valuesítóÉsTörlő(data)) //végül kiszedem az adatokat a form celláiból lenullázom őket, és odaadom az adatokat a sorkészítőnek
     }
 }
 form.addEventListener("submit",validáció); // hozzáadok egy eventlisenert a function submit eventjére  és még megadom a validáció változót ami tartalmazza a validációs functiont
