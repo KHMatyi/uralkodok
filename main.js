@@ -2,6 +2,7 @@
  * @typedef {String[]} TableHeaderData
  * @typedef {{ur:String,esem:String,t:String,esem2:String,t2:String}} RowData
  * @typedef {RowData[]} TableData
+ * @typedef {id:String,text:String,errorId:String} FormData
  */
 
 const thd = ["Uralkodó","Esemény","Évszám"]; //A táblázat headerjel elmentve egy listába
@@ -90,7 +91,6 @@ class T_Table{ //class a table generáláshához
     }
 
     /**
-     * 
      * @param {HTMLElement} tr 
      * @param {String} data 
      * @param {Boolean} rs 
@@ -104,6 +104,73 @@ class T_Table{ //class a table generáláshához
         }
     }
 }
+
+const formData = [ // tárolja az adatokat a form programatikus létrehozásához
+    {
+        id:"uralkodo_nev", // házzákötök egy sztinget egy kulcshoz
+        text:"Uralkodó neve:",// házzákötök egy sztinget egy kulcshoz
+        errorId:"ur"// házzákötök egy sztinget egy kulcshoz
+    },
+    {
+        id:"esemeny1",// házzákötök egy sztinget egy kulcshoz
+        text:"Első esemény:",// házzákötök egy sztinget egy kulcshoz
+        errorId:"esem"// házzákötök egy sztinget egy kulcshoz
+    },
+    {
+        id:"evszam1",// házzákötök egy sztinget egy kulcshoz
+        text:"Első esemény évszáma:",// házzákötök egy sztinget egy kulcshoz
+        errorId:"t"// házzákötök egy sztinget egy kulcshoz
+    },
+    {
+        id:"esemeny2",// házzákötök egy sztinget egy kulcshoz
+        text:"Második esemény:",// házzákötök egy sztinget egy kulcshoz
+        errorId:"esem2"// házzákötök egy sztinget egy kulcshoz
+    },
+    {
+        id:"evszam2",// házzákötök egy sztinget egy kulcshoz
+        text:"Második esemény évszáma:",// házzákötök egy sztinget egy kulcshoz
+        errorId:"t2"// házzákötök egy sztinget egy kulcshoz
+    },
+]
+formGen(formData); //lefuttatom a formgeneráló functiont 
+
+/**
+ * @param {FormData[]} formData 
+ */
+function formGen(formData){ //deklarálom a form generáló functiont 
+    const form = document.getElementById("form") // megszertem a formot
+
+    const brMaker = ()=>{ // egy function az egyszerűgg brgyártáshoz
+        const br = document.createElement("br")
+        form.appendChild(br);
+    }
+
+    for (const i of formData){ // végigiterálok a fomDatán és minden iterációban léterhozok hozzá egy uj bevizeli mezőt meg amik kellenek hozzá
+        const label = document.createElement("label");//létrehozok egy lable-t 
+        form.appendChild(label); //belerakom a formba
+        label.innerHTML = i.text; //megadom a lable szvegét
+        label.for = i.id; // megadom, hogy mihez tartozik
+        brMaker() // és utána linebrakelek
+
+        const input = document.createElement("input"); // létrehozok egy inputot
+        form.appendChild(input); //hozzáadom a fomhoz
+        input.type = "text"; //megadom a tupusát
+        input.id = i.id; // megadom az idjét
+
+        const p = document.createElement("p"); // létrehozok egy p html elementet
+        form.appendChild(p);// hozzáadom a formhoz
+        p.id = i.errorId; // megadom az idét
+        p.classList += "error"; //megadom a classát
+
+        brMaker() //rakok egy brt 
+        brMaker() //rakok egy brt 
+    }
+    const button = document.createElement("button"); // létrehozok egy buttont
+    form.appendChild(button); // belerakom a formba 
+    button.innerHTML = "Hozzáadás"; // és megadom a szöveget ami megjelenik rajta
+}
+
+
 
 const form = document.getElementById("form"); // elmentek egy pointert a html elementről
 const formCells = { // kötelető cellákat tárolom itt
@@ -119,17 +186,19 @@ const formCellsPluss = { //nem kötelető cellákat tárolom itt
 const t = new T_Table(thd,tcd); // példányosítom a T_Table clast
 
 
-function valuesítóÉsTörlő(obj){ //bevesz egy objektumot, végigmegy az objektumon és elmenti a tagjainak a value atributumát és lenullázza őket.
-    objout = {} // létrehozok egy üres objektumot
-    for(const i in obj){ // végigmegyek az objektumon
-        objout[i] = obj[i].value; // elmentem az adatokat
-        obj[i].value = ""; // lenullázom
-    }
-    return objout; //visszaadom az adatokat
-}
-
 const validáció = (e)=>{ //deklarálok egy validávió változót ami tartalmaz egy functiont ami csinálja a validációt
     e.preventDefault(); // megakadájozom az alap történések lefutását
+
+    const valuesítóÉsTörlő = (obj)=> { //bevesz egy objektumot, végigmegy az objektumon és elmenti a tagjainak a value atributumát és lenullázza őket.
+        objout = {} // létrehozok egy üres objektumot
+        for(const i in obj){ // végigmegyek az objektumon
+            objout[i] = obj[i].value; // elmentem az adatokat
+            obj[i].value = ""; // lenullázom
+        }
+        return objout; //visszaadom az adatokat
+    }
+
+
     for (const i of form.querySelectorAll(".error")){ // végigiterálok az error classu elemeken és lenullázom a szövegüket
         i.innerHTML = ""; // szöveg lenullázás
     }
@@ -149,6 +218,7 @@ const validáció = (e)=>{ //deklarálok egy validávió változót ami tartalma
             document.getElementById("esem2").innerHTML = "Ezt a ezőt is ki kell tölteni!"; // akkor a esem2 nincs vagyis hiba üzenet kell
         }
     }
+
     if (jo){ // ellenörzöm az hogy jók voltak e az előző értékek
         let data = { // létrehozok egy változót ami tárolja a tábla adatainak a tárolóit
             ur:formCells.ur,//hozzárendelem a kulcshoz a form egyik celláját
