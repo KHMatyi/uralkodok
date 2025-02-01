@@ -63,9 +63,7 @@ const formData = [ // tárolja az adatokat a form programatikus létrehozásáho
     },
 ]
 
-formGen(formData); //lefuttatom a formgeneráló functiont 
-
 const t = new T_Table(thd,tcd); // példányosítom a T_Table clast
+const f = new F_Form(formData, t);
 
-form.addEventListener("submit",validacio); // hozzáadok egy eventlisenert a function submit eventjére  és még megadom a validáció változót ami tartalmazza a validációs functiont
 
