@@ -141,6 +141,11 @@ const validáció = (e)=>{ //deklarálok egy validávió változót ami tartalma
             data.t2 = formCellsPluss.t2.value;//ezt is hozzáadom a data objektumhoz
         }
         t.addRow(data) //és végül odaadom ezt az objektumot a tábláhozadó metódusnak
+        formCells.ur.value = ""; //kitöröljuk a form bemeneti mezejéből az adatokat
+        formCells.esem.value = "";//kitöröljuk a form bemeneti mezejéből az adatokat
+        formCells.t.value = "";//kitöröljuk a form bemeneti mezejéből az adatokat
+        formCellsPluss.esem2.value = "";//kitöröljuk a form bemeneti mezejéből az adatokat
+        formCellsPluss.t2.value = "";//kitöröljuk a form bemeneti mezejéből az adatokat
     }
 }
 form.addEventListener("submit",validáció); // hozzáadok egy eventlisenert a function submit eventjére  és még megadom a validáció változót ami tartalmazza a validációs functiont
